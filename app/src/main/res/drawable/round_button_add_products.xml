@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:width="20dp" android:height="20dp">
+        <selector>
+            <item android:state_pressed="false">
+                <shape android:shape="oval">
+                    <solid android:color="@color/gray_009900"></solid>
+                </shape>
+            </item>
+            <item android:state_pressed="true">
+                <shape android:shape="oval">
+                    <solid android:color="@color/gray_00CC00"></solid>
+                </shape>
+            </item>
+        </selector>
+    </item>
+
+    <item
+        android:drawable="@drawable/ic_plus"
+        android:width="10dp"
+        android:height="10dp"
+        android:top="5dp"
+        android:left="5dp"/>
+</layer-list>

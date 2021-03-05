@@ -10,10 +10,9 @@ class LoginPresenter(singInInteractor: SingInInteractor): LoginContract.Presente
     var view: LoginContract.View? =  null
     var singInInteractor: SingInInteractor? = null
 
-    //corutinas
     private val job = Job()
     override val coroutineContext: CoroutineContext
-    get() = Dispatchers.Main + job
+        get() = Dispatchers.Main + job
 
     init {
         this.singInInteractor = singInInteractor

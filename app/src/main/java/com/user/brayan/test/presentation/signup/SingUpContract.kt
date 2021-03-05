@@ -13,7 +13,7 @@ interface SingUpContract {
     }
 
     interface Presenter {
-        fun attachView(view: SingUpContract.View)
+        fun attachView(view: View)
         fun dettachView()
         fun isViewAttached(): Boolean
         fun checkEmptyName(fullName: String): Boolean

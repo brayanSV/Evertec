@@ -1,7 +1,6 @@
 package com.user.brayan.test.presentation.signup.view
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.user.brayan.test.R
@@ -30,6 +29,10 @@ class SingUpActivity : BaseActivity(), SingUpContract.View {
 
     override fun getLayout(): Int {
         return R.layout.activity_sing_up
+    }
+
+    override fun getToolbar(): Int {
+        return 0
     }
 
     override fun singUp() {

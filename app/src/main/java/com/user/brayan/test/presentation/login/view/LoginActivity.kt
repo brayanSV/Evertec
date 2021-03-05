@@ -1,5 +1,6 @@
 package com.user.brayan.test.presentation.login.view
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -40,6 +41,7 @@ class LoginActivity : BaseActivity(),
         }
     }
 
+    @SuppressLint("NewApi")
     override fun onResume() {
         super.onResume()
 
@@ -63,10 +65,12 @@ class LoginActivity : BaseActivity(),
         return String(encodedBytes)
     }
 
-
-
     override fun getLayout(): Int {
         return R.layout.activity_login
+    }
+
+    override fun getToolbar(): Int {
+        return 0
     }
 
     override fun showError(msgError: String) {

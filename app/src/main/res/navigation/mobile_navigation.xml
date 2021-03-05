@@ -4,23 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/nav_home">
 
     <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.user.brayan.test.presentation.home.view.HomeFragment"
+        android:id="@+id/nav_home"
+        android:name="com.user.brayan.test.presentation.products.view.ProductsFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
-
-    <fragment
-        android:id="@+id/payFragment"
-        android:name="com.user.brayan.test.presentation.pay.view.PayFragment"
-        android:label="fragment_pay"
-        tools:layout="@layout/fragment_pay" />
-
-    <fragment
-        android:id="@+id/recordFragment"
-        android:name="com.user.brayan.test.presentation.record.view.RecordFragment"
-        android:label="fragment_record"
-        tools:layout="@layout/fragment_record" />
+        tools:layout="@layout/fragment_products" />
 </navigation>

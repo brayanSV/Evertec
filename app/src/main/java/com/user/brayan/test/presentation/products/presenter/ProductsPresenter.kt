@@ -33,11 +33,15 @@ class ProductsPresenter(productsInteractor: ProductsInteractor): ProductsContrac
     override fun loadProducts() {
         this.productsInteractor?.consultProducts(object: ProductsInteractor.ProductsCallback{
             override fun onProductsSuccess(productsList: List<ProductsModel>) {
-                view?.loadProducts(productsList)
+                if (isViewAttached()) {
+                    view?.loadProducts(productsList)
+                }
             }
 
             override fun onProductsFailure(msgError: String) {
-                view?.showError(msgError)
+                if (isViewAttached()) {
+                    view?.showError(msgError)
+                }
             }
         })
     }

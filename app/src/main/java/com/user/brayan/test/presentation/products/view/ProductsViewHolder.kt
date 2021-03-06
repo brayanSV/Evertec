@@ -20,12 +20,27 @@ class ProductsViewHolder(private val view: View): RecyclerView.ViewHolder(view) 
         val btnSubtract: Button = view.findViewById(R.id.btnSubtract)
         val btnAddProduct: Button = view.findViewById(R.id.btnAddProduct)
 
-        //val pesosCol = DecimalFormat("#,###.##")
         val pesosCol = NumberFormat.getCurrencyInstance(Locale("es", "CO"))
         pesosCol.maximumFractionDigits = 0
 
         Picasso.get().load(item.photo).into(photoProd)
         tvTitle.text = "${item.title}"
         tvPrecio.text = "${pesosCol.format(item.price)}"
+
+        btnSubtract.setOnClickListener {
+            tvCantidad.text = "${subtractProduct(Integer.parseInt(tvCantidad.text.toString()))}"
+        }
+
+        btnAddProduct.setOnClickListener {
+            tvCantidad.text = "${addProduct(Integer.parseInt(tvCantidad.text.toString()))}"
+        }
+    }
+
+    fun addProduct(cant: Int): Int {
+        return cant+1
+    }
+
+    fun subtractProduct(cant: Int): Int {
+        return if (cant == 0) 0 else (cant-1)
     }
 }

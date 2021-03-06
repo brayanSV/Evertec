@@ -7,5 +7,9 @@
         <item
             android:id="@+id/nav_home"
             android:title="@string/title_products" />
+
+        <item
+            android:id="@+id/nav_cart"
+            android:title="@string/title_cart" />
     </group>
 </menu>

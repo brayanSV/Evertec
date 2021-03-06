@@ -40,7 +40,8 @@ class MainActivity : BaseActivity() {
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home
+                R.id.nav_home,
+                R.id.nav_cart
             ), drawerLayout
         )
 

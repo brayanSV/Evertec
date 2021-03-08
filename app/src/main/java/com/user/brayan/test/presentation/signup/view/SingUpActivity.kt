@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.View
 import com.user.brayan.test.R
 import com.user.brayan.test.base.BaseActivity
+import com.user.brayan.test.data.db.ApplicationDatabase
+import com.user.brayan.test.data.db.dao.model.UserEntity
 import com.user.brayan.test.domain.interactor.singup.SingUpInteractorImp
 import com.user.brayan.test.presentation.login.view.LoginActivity
 import com.user.brayan.test.presentation.main.view.MainActivity
@@ -80,6 +82,10 @@ class SingUpActivity : BaseActivity(), SingUpContract.View {
     override fun hideProgressBar() {
         progressBarSingUp.visibility = View.GONE
         btnSingUp.visibility = View.VISIBLE
+    }
+
+    override fun saveUserDataBase(userEntity: UserEntity) {
+        ApplicationDatabase.getAppDataBase(this)?.getUserDao()?.saveUser(userEntity)
     }
 
     override fun showError(msgError: String) {

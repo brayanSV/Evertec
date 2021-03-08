@@ -1,30 +1,26 @@
 package com.user.brayan.test.presentation.login.view
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
-import androidx.annotation.RequiresApi
+import android.widget.Toast
+import androidx.room.Database
 import com.user.brayan.test.R
 import com.user.brayan.test.base.BaseActivity
+import com.user.brayan.test.data.db.ApplicationDatabase
+import com.user.brayan.test.data.db.dao.model.UserEntity
 import com.user.brayan.test.domain.interactor.login.SingInInteractorImp
+import com.user.brayan.test.presentation.UserSingleton
 import com.user.brayan.test.presentation.login.LoginContract
 import com.user.brayan.test.presentation.login.presenter.LoginPresenter
 import com.user.brayan.test.presentation.main.view.MainActivity
 import com.user.brayan.test.presentation.signup.view.SingUpActivity
 import kotlinx.android.synthetic.main.activity_login.*
-import java.math.BigInteger
-import java.security.MessageDigest
-import java.security.SecureRandom
-import java.text.SimpleDateFormat
-import java.util.*
 
 
-class LoginActivity : BaseActivity(),
-    LoginContract.View {
-
+class LoginActivity : BaseActivity(), LoginContract.View {
     lateinit var presenter: LoginPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,28 +37,12 @@ class LoginActivity : BaseActivity(),
         }
     }
 
-    @SuppressLint("NewApi")
     override fun onResume() {
         super.onResume()
 
-        val tranKey = "024h1IlD"
-        val nonce = BigInteger(130, SecureRandom()).toString()
-        val seed = SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ", Locale.getDefault()).format(Date())
-        val tranKey2 = base64(SHA_256(nonce + seed + tranKey))
-
-        Log.e("datos", "nonce: ${base64(nonce.toByteArray())} , seed: $seed, tranKey: $tranKey2");
-    }
-
-
-    fun SHA_256(input: String): ByteArray? {
-        val mDigest: MessageDigest = MessageDigest.getInstance("SHA-256")
-        return mDigest.digest(input.toByteArray())
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun base64(input: ByteArray?): String? {
-        val encodedBytes = Base64.getEncoder().encode(input)
-        return String(encodedBytes)
+        if (verifyUserIsOnline()) {
+            navigateToMain()
+        }
     }
 
     override fun getLayout(): Int {
@@ -102,6 +82,28 @@ class LoginActivity : BaseActivity(),
         startActivity(intent)
     }
 
+    override fun verifyUserExist(userId: String): Long {
+        val user = ApplicationDatabase.getAppDataBase(this)?.getUserDao()?.findByUser(userId)
+
+        if (user?.isEmpty() == false) {
+           return user[0].accountId
+        }
+
+        return 0
+    }
+
+    override fun verifyUserIsOnline(): Boolean {
+        return ApplicationDatabase.getAppDataBase(this)?.getUserDao()?.userIsOnline() != null
+    }
+
+    override fun saveUserDataBase(userEntity: UserEntity) {
+        ApplicationDatabase.getAppDataBase(this)?.getUserDao()?.saveUser(userEntity)
+    }
+
+    override fun updateUserOnline(isOnline: Boolean, accountId: Long) {
+        ApplicationDatabase.getAppDataBase(this)?.getUserDao()?.updateOnlineUser(isOnline, accountId)
+    }
+
     override fun navigateToRegistrer() {
         val intent = Intent(this, SingUpActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -111,12 +113,10 @@ class LoginActivity : BaseActivity(),
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         presenter.dettachView()
-        presenter.dettachJob()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         presenter.dettachView()
-        presenter.dettachJob()
     }
 }

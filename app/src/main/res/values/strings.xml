@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Demostracion</string>
+    <string name="app_name">Evertec</string>
     <string name="title_activity_main">MainActivity</string>
 
     <!--Navigation Drawer-->

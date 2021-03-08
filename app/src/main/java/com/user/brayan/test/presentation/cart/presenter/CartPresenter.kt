@@ -1,8 +1,8 @@
 package com.user.brayan.test.presentation.cart.presenter
 
+import android.util.Log
 import com.user.brayan.test.domain.interactor.cart.ProductsCartInteractor
 import com.user.brayan.test.presentation.cart.CartContract
-import com.user.brayan.test.presentation.cart.model.CartModel
 
 class CartPresenter(cartInteractor: ProductsCartInteractor): CartContract.Presenter {
     var view: CartContract.View? = null
@@ -25,25 +25,14 @@ class CartPresenter(cartInteractor: ProductsCartInteractor): CartContract.Presen
     }
 
     override fun loadProducts() {
-        this.cartInteractor?.consultProducts(object: ProductsCartInteractor.ProductsCartCallback{
-            override fun onProductsSuccess(productsList: List<CartModel>) {
-                if (isViewAttached()) {
-                    if (productsList.isNotEmpty()) {
-                        view?.showProductsCart()
-                        view?.loadProductsCart(productsList)
-                    } else {
-                        view?.hideProductsCart()
-                    }
-                }
+        if (isViewAttached()) {
+            if (!view?.veryfiEmptyProducts()!!) {
+                view?.showProductsCart()
+                view?.loadProductsCart()
+            } else {
+                view?.hideProductsCart()
             }
-
-            override fun onProductsFailure(msgError: String) {
-                if (isViewAttached()) {
-                    view?.showError(msgError)
-                }
-            }
-
-        })
+        }
     }
 
 }

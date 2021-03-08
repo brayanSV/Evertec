@@ -4,12 +4,12 @@
         <selector>
             <item android:state_pressed="false">
                 <shape android:shape="oval">
-                    <solid android:color="@color/gray_009900"></solid>
+                    <solid android:color="@color/green_009900"></solid>
                 </shape>
             </item>
             <item android:state_pressed="true">
                 <shape android:shape="oval">
-                    <solid android:color="@color/gray_00CC00"></solid>
+                    <solid android:color="@color/green_00CC00"></solid>
                 </shape>
             </item>
         </selector>

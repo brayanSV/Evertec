@@ -1,10 +1,12 @@
 package com.user.brayan.test.presentation.products
 
-import com.user.brayan.test.presentation.products.model.ProductsModel
+import com.user.brayan.test.data.db.dao.model.ProductsEntity
 
 interface ProductsContract {
     interface View {
-        fun loadProducts(productsList: List<ProductsModel>)
+        fun loadProducts()
+        fun saveProducts(products: List<ProductsEntity>)
+        fun veryfiEmptyProducts(): Boolean
         fun showError(msgError: String)
     }
 

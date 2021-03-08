@@ -6,8 +6,10 @@
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="gray_999999">#999999</color>
-    <color name="gray_009900">#009900</color>
-    <color name="gray_00CC00">#00CC00</color>
+    <color name="gray_B1B1B1">#B1B1B1</color>
+    <color name="gray_D0D0D0">#D0D0D0</color>
+    <color name="green_009900">#009900</color>
+    <color name="green_00CC00">#00CC00</color>
     <color name="red_DF0000">#DF0000</color>
     <color name="red_FF0000">#FF0000</color>
 

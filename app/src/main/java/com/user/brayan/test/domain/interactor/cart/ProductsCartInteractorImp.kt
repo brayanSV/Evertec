@@ -1,10 +1,8 @@
 package com.user.brayan.test.domain.interactor.cart
 
-import com.user.brayan.test.presentation.cart.model.CartModel
-
 class ProductsCartInteractorImp: ProductsCartInteractor {
     override fun consultProducts(listener: ProductsCartInteractor.ProductsCartCallback) {
-        val productsCart = ArrayList<CartModel>()
+        /*val productsCart = ArrayList<CartModel>()
 
         productsCart.add(
             CartModel (
@@ -33,6 +31,6 @@ class ProductsCartInteractorImp: ProductsCartInteractor {
             )
         )
 
-        listener.onProductsSuccess(productsCart)
+        listener.onProductsSuccess(productsCart)*/
     }
 }

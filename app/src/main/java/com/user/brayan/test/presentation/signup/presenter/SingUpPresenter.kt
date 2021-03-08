@@ -1,24 +1,14 @@
 package com.user.brayan.test.presentation.signup.presenter
 
 import androidx.core.util.PatternsCompat
+import com.user.brayan.test.data.db.dao.model.UserEntity
 import com.user.brayan.test.domain.interactor.singup.SingUpInteractor
 import com.user.brayan.test.presentation.signup.SingUpContract
-import com.user.brayan.test.presentation.signup.exceptions.FirebaseSingUpException
 import com.user.brayan.test.presentation.signup.model.UserSingUp
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
 
-class SingUpPresenter(singUpInteractor: SingUpInteractor): SingUpContract.Presenter, CoroutineScope {
+class SingUpPresenter(singUpInteractor: SingUpInteractor): SingUpContract.Presenter {
     var view: SingUpContract.View? = null
     var singUpInteractor: SingUpInteractor? = null
-
-    //corutinas
-    private val job = Job()
-    override val coroutineContext: CoroutineContext
-    get() = Dispatchers.Main + job
 
     init {
         this.singUpInteractor = singUpInteractor
@@ -53,22 +43,24 @@ class SingUpPresenter(singUpInteractor: SingUpInteractor): SingUpContract.Presen
     }
 
     override fun singUp(userSingUp: UserSingUp) {
-        launch {
-            view?.showProgressBar()
+        view?.showProgressBar()
 
-            try {
-                singUpInteractor?.singUp(userSingUp)
-
+        singUpInteractor?.singUp(userSingUp, object: SingUpInteractor.SingUpCallback {
+            override fun onSuccess(userEntity: UserEntity) {
                 if (isViewAttached()) {
+                    view?.saveUserDataBase(userEntity)
+
                     view?.navigateToMain()
                     view?.hideProgressBar()
                 }
-            } catch (e: FirebaseSingUpException) {
+            }
+
+            override fun onFailure(errorMsg: String) {
                 if (isViewAttached()) {
-                    view?.showError(e.message.toString())
+                    view?.showError(errorMsg)
                     view?.hideProgressBar()
                 }
             }
-        }
+        })
     }
 }

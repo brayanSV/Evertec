@@ -1,19 +1,13 @@
 package com.user.brayan.test.presentation.login.presenter
 
+import android.util.Log
+import com.user.brayan.test.data.db.dao.model.UserEntity
 import com.user.brayan.test.domain.interactor.login.SingInInteractor
-import com.user.brayan.test.presentation.login.exceptions.FirebaseLoginException
 import com.user.brayan.test.presentation.login.LoginContract
-import kotlinx.coroutines.*
-import kotlin.coroutines.CoroutineContext
 
-class LoginPresenter(singInInteractor: SingInInteractor): LoginContract.Presenter, CoroutineScope {
+class LoginPresenter(singInInteractor: SingInInteractor): LoginContract.Presenter {
     var view: LoginContract.View? =  null
     var singInInteractor: SingInInteractor? = null
-
-    //corutinas
-    private val job = Job()
-    override val coroutineContext: CoroutineContext
-    get() = Dispatchers.Main + job
 
     init {
         this.singInInteractor = singInInteractor
@@ -27,36 +21,39 @@ class LoginPresenter(singInInteractor: SingInInteractor): LoginContract.Presente
         this.view = null
     }
 
-    override fun dettachJob() {
-        coroutineContext.cancel()
-    }
-
     override fun isViewAttached(): Boolean {
         return this.view != null
     }
 
     override fun singInUser(email: String, password: String) {
-        launch {
-            view?.showProgressBar()
+        view?.showProgressBar()
 
-            try {
-                singInInteractor?.singInUser(email, password)
-
+        singInInteractor?.singInUser(email, password, object : SingInInteractor.LoginCallback{
+            override fun onSuccess(userEntity: UserEntity) {
                 if (isViewAttached()) {
+                    val accountId: Long? = view?.verifyUserExist(userEntity.userId)
+
+                    if (accountId == 0L) {
+                        view?.saveUserDataBase(userEntity)
+                    } else {
+                        view?.updateUserOnline(true, accountId!!)
+                    }
+
                     view?.hideProgressBar()
                     view?.navigateToMain()
                 }
-            } catch (e: FirebaseLoginException) {
+            }
+
+            override fun onFailure(errorMsg: String) {
                 if (isViewAttached()) {
-                    view?.showError(e.message.toString())
+                    view?.showError(errorMsg)
                     view?.hideProgressBar()
                 }
             }
-        }
+        })
     }
 
     override fun checkEmptyFields(email: String, password: String): Boolean {
         return email.isEmpty() || password.isEmpty()
     }
-
 }

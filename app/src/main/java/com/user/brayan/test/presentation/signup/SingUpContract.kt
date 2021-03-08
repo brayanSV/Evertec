@@ -1,5 +1,6 @@
 package com.user.brayan.test.presentation.signup
 
+import com.user.brayan.test.data.db.dao.model.UserEntity
 import com.user.brayan.test.presentation.signup.model.UserSingUp
 
 interface SingUpContract {
@@ -9,11 +10,12 @@ interface SingUpContract {
         fun navigateToLogin()
         fun showProgressBar()
         fun hideProgressBar()
+        fun saveUserDataBase(userEntity: UserEntity)
         fun showError(msgError: String)
     }
 
     interface Presenter {
-        fun attachView(view: SingUpContract.View)
+        fun attachView(view: View)
         fun dettachView()
         fun isViewAttached(): Boolean
         fun checkEmptyName(fullName: String): Boolean
